@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
-import { signup, isAuth } from '../../actions/auth'
+import { signin, authenticate, isAuth } from '../../actions/auth'
 import Router from 'next/router'
 
-const SignupComponent = () => {
+const SigninComponent = () => {
     const [values, setValues] = useState({
-        name: '',
         email: '',
         password: '',
         error: '',
@@ -13,24 +12,35 @@ const SignupComponent = () => {
         showForm: true
     })
 
-    const {name, email,password , error , loading, message, showForm} = values;
+    const {email,password , error , loading, message, showForm} = values;
 
     useEffect(() => {
         isAuth() && Router.push('/')
     }, [])
-
     const handleSubmit = (e) => {
         e.preventDefault()
         // console.table({name, email,password , error , loading, message, showForm})
         setValues({...values, loading: true, error: false})
-        const user = {name, email, password}
+        const user = {email, password}
 
-        signup(user)
+        signin(user)
         .then(data => {
             if(data.error) {
                 setValues({...values, error: data.error, loading: false})
             } else {
-                setValues({...values, name: '', email: '', password:'', error: '', loading: false, message: data.message, showForm: false});
+                // save user token to cookie 
+
+                // save user info to local storage 
+                console.log(data);
+                
+                // auth user 
+                authenticate(data, () => {
+                    if(isAuth() && isAuth.role === 1) {
+                        Router.push(`/admin`)
+                    } else {
+                        Router.push(`/user`)
+                    }
+                });
             }
         })
         
@@ -46,13 +56,10 @@ const SignupComponent = () => {
     const showError = () => (error ? <div className="alert alert-danger">{error}</div> : '');
     const showMessage = () => (message ? <div className="alert alert-info">{message}</div> : '');
 
-    const signupForm = () => {
+    const signinForm = () => {
         return (
             <div>
                 <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <input value={name} onChange={handleChange('name')} className="form-control" type="text" placeholder="Enter your name" />
-                </div>
                 <div className="form-group">
                     <input value={email} onChange={handleChange('email')} className="form-control" type="email" placeholder="Enter your email" />
                 </div>
@@ -72,9 +79,9 @@ const SignupComponent = () => {
             {showError()}
             {showLoading()}
             {showMessage()}
-            {showForm && signupForm()}
+            {showForm && signinForm()}
         </React.Fragment>
     )
 }
 
-export default SignupComponent;
+export default SigninComponent;

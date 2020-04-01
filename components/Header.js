@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import {APP_NAME} from '../config';
 import Link from 'next/link'
+import {signout, isAuth} from '../actions/auth';
+import Router from 'next/router'
+
 import {
   Collapse,
   Navbar,
@@ -26,25 +29,64 @@ const Header = () => {
         <div>
         <Navbar color="light" light expand="md">
           <Link href="/">
-            <NavLink className="font-weight-bold">{APP_NAME}</NavLink>
+            <NavLink style={{ cursor: 'pointer'}} className="font-weight-bold">{APP_NAME}</NavLink>
           </Link>
           <NavbarToggler onClick={toggle} />
           <Collapse isOpen={isOpen} navbar>
             <Nav className="ml-auto" navbar>
+
+            {/* signin and signup  */}
+            {!isAuth() && (<React.Fragment>
               <NavItem>
                 <Link href="/signin">
-                    <NavLink>
+                    <NavLink style={{ cursor: 'pointer'}}>
                         Signin
                         </NavLink>
                     </Link>
               </NavItem>
               <NavItem>
                 <Link href="/signup">
-                    <NavLink>
+                    <NavLink style={{ cursor: 'pointer'}}>
                         Signup
                         </NavLink>
                     </Link>
               </NavItem>
+              
+            </React.Fragment>) }
+              {/* {JSON.stringify(isAuth())} */}
+              
+              {/* user dashboard  */}
+              {isAuth() && isAuth().role === 0 && (
+                <NavItem>
+                <Link href="/user">
+                    <NavLink style={{ cursor: 'pointer'}} >
+                        {`${isAuth().name}'s Dashboard`}
+                        </NavLink>
+                    </Link>
+              </NavItem>
+              )}
+
+              {/* admin dashboard  */}
+            {isAuth() && isAuth().role === 1 &&  (
+                <NavItem>
+                <Link href="/admin">
+                    <NavLink style={{ cursor: 'pointer'}} >
+                        {`${isAuth().name}'s Dashboard`}
+                        </NavLink>
+                    </Link>
+              </NavItem>
+              )}
+              
+              {/* signout section  */}
+              {isAuth() && (
+                <NavItem>
+                <Link>
+                    <NavLink style={{ cursor: 'pointer'}}  onClick={() => signout(() => Router.replace('/signin'))}>
+                        Signout
+                        </NavLink>
+                    </Link>
+              </NavItem>
+              )}
             </Nav>
           </Collapse>
         </Navbar>
