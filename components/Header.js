@@ -4,6 +4,10 @@ import Link from 'next/link'
 import {signout, isAuth} from '../actions/auth';
 import Router from 'next/router'
 
+// for progressbar on top 
+import NProgress from 'nprogress';
+
+
 import {
   Collapse,
   Navbar,
@@ -18,6 +22,11 @@ import {
   DropdownItem,
   NavbarText
 } from 'reactstrap';
+
+Router.onRouteChangeStart = url => NProgress.start()
+Router.onRouteChangeComplete = url => NProgress.done()
+Router.onRouteChangeError = url => NProgress.done()
+
 
 const Header = () => {
 
