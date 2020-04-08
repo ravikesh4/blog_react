@@ -38,7 +38,7 @@ const Card = ({blog}) => {
                 {showBlogCategories(blog)}
                 {showBlogTags(blog)}
                 <hr />
-                {JSON.stringify(blog.tag)}
+                {/* {JSON.stringify(blog.tag)} */}
 
             </section>
 
