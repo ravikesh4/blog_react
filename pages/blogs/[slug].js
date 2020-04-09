@@ -7,6 +7,7 @@ import { API, DOMAIN, APP_NAME } from '../../config';
 import renderHTML from 'react-render-html'
 import moment from 'moment'
 import SmalllCard from '../../components/blog/SmalllCard'
+import DisqusThread from '../../components/DisqusThread'
 
 const SingleBlog = ({blog, query}) => {
 
@@ -75,6 +76,14 @@ const SingleBlog = ({blog, query}) => {
             ))
         }
 
+        const showComments = () => {
+            return (
+                <div>
+                    <DisqusThread id={blog.id} title={blog.title} path={`/blog/${blog.slug}`} />
+                </div>
+            )
+        }
+
     return <React.Fragment>
         {head()}
         <Layout>
@@ -117,7 +126,7 @@ const SingleBlog = ({blog, query}) => {
 
 
                     <div className="container pb-5">
-                        <p>Show comment</p>
+                        {showComments()}
                     </div>
                     
                 </article>

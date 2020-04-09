@@ -6,6 +6,7 @@ module.exports = {
         API_DEVELOPMENT: 'http://localhost:5000/api',
         PRODUCTION: false,
         DOMAIN_DEVELOPMENT: 'http://localhost:3000',
-        DOMAIN_PRODUCTION:'ravikesh.tech'
+        DOMAIN_PRODUCTION:'ravikesh.tech',
+        DISQUS_SHORTNAME: 'raviblog-1'
     }
 };
