@@ -3,6 +3,7 @@ import {APP_NAME} from '../config';
 import Link from 'next/link'
 import {signout, isAuth} from '../actions/auth';
 import Router from 'next/router'
+import Search from './blog/Search'
 
 // for progressbar on top 
 import NProgress from 'nprogress';
@@ -35,8 +36,8 @@ const Header = () => {
     const toggle = () => setIsOpen(!isOpen);
 
     return (
-        <div>
-        <Navbar color="light" light expand="md">
+        <React.Fragment>
+          <Navbar color="light" light expand="md">
           <Link href="/">
             <NavLink style={{ cursor: 'pointer'}} className="font-weight-bold">{APP_NAME}</NavLink>
           </Link>
@@ -112,7 +113,9 @@ const Header = () => {
             </Nav>
           </Collapse>
         </Navbar>
-      </div>
+
+            <Search />
+        </React.Fragment>
     
     )
 }
